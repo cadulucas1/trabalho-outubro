@@ -1,0 +1,81 @@
+-- Tabela Estado
+CREATE TABLE Estado (
+    id_estado INT PRIMARY KEY AUTO_INCREMENT,
+    nome_estado VARCHAR(100) NOT NULL
+);
+
+-- Tabela Cidade
+CREATE TABLE Cidade (
+    id_cidade INT PRIMARY KEY AUTO_INCREMENT,
+    nome_cidade VARCHAR(100) NOT NULL,
+    id_estado INT,
+    FOREIGN KEY (id_estado) REFERENCES Estado(id_estado)
+);
+
+-- Tabela Gênero
+CREATE TABLE Genero (
+    id_genero INT PRIMARY KEY AUTO_INCREMENT,
+    descricao_genero VARCHAR(50) NOT NULL
+);
+
+-- Tabela Raça
+CREATE TABLE Raca (
+    id_raca INT PRIMARY KEY AUTO_INCREMENT,
+    descricao_raca VARCHAR(50) NOT NULL
+);
+
+-- Tabela Religião
+CREATE TABLE Religiao (
+    id_religiao INT PRIMARY KEY AUTO_INCREMENT,
+    descricao_religiao VARCHAR(100) NOT NULL
+);
+
+-- Tabela Agências
+CREATE TABLE Agencias (
+    id_agencia INT PRIMARY KEY AUTO_INCREMENT,
+    numero_agencia VARCHAR(10) NOT NULL,
+    endereco VARCHAR(255) NOT NULL,
+    id_cidade INT,
+    id_estado INT,
+    FOREIGN KEY (id_cidade) REFERENCES Cidade(id_cidade),
+    FOREIGN KEY (id_estado) REFERENCES Estado(id_estado)
+);
+
+-- Tabela Clientes
+CREATE TABLE Clientes (
+    id_cliente INT PRIMARY KEY AUTO_INCREMENT,
+    nome_cliente VARCHAR(255) NOT NULL,
+    cpf_cliente VARCHAR(14) NOT NULL,
+    id_genero INT,
+    id_raca INT,
+    id_religiao INT,
+    id_cidade INT,
+    id_estado INT,
+    id_agencia INT,
+    saldo DECIMAL(10, 2) DEFAULT 0.0,
+    numero_conta VARCHAR(20) NOT NULL,
+    FOREIGN KEY (id_genero) REFERENCES Genero(id_genero),
+    FOREIGN KEY (id_raca) REFERENCES Raca(id_raca),
+    FOREIGN KEY (id_religiao) REFERENCES Religiao(id_religiao),
+    FOREIGN KEY (id_cidade) REFERENCES Cidade(id_cidade),
+    FOREIGN KEY (id_estado) REFERENCES Estado(id_estado),
+    FOREIGN KEY (id_agencia) REFERENCES Agencias(id_agencia)
+);
+
+-- Tabela Saque
+CREATE TABLE Saque (
+    id_saque INT PRIMARY KEY AUTO_INCREMENT,
+    id_cliente INT,
+    valor_saque DECIMAL(10, 2) NOT NULL,
+    data_saque TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_cliente) REFERENCES Clientes(id_cliente)
+);
+
+-- Tabela Depósito
+CREATE TABLE Deposito (
+    id_deposito INT PRIMARY KEY AUTO_INCREMENT,
+    id_cliente INT,
+    valor_deposito DECIMAL(10, 2) NOT NULL,
+    data_deposito TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_cliente) REFERENCES Clientes(id_cliente)
+);
